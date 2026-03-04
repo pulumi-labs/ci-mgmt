@@ -1,3 +1,0 @@
-name: pulumi-provider-repos
-runtime: nodejs
-description: Management of Pulumi Provider Repos
