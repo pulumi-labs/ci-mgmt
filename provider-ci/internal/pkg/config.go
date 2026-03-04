@@ -333,6 +333,9 @@ type Config struct {
 
 	// GitHubApp contains our GitHub app auth parameters. Enabled by default.
 	GitHubApp GitHubApp `yaml:"github-app"`
+
+	// MiseVersion specifies the version of mise to use on GitHub Actions.
+	MiseVersion string `yaml:"mise-version"`
 }
 
 // LoadLocalConfig loads the provider configuration at the given path with
