@@ -49,7 +49,7 @@ jobs:
       env:
         MISE_FETCH_REMOTE_VERSIONS_TIMEOUT: 30s
       with:
-        version: 2026.2.1
+        version: #{{ .Config.MiseVersion }}#
         github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_TOKEN || steps.esc-secrets.outputs.PULUMI_BOT_TOKEN }}#{{ end }}#
         cache_save: false # A different job handles caching our tools.
     - name: disarm go:embed directives to enable lint
