@@ -404,7 +404,7 @@ func renderESCStep(v any) (string, error) {
 // renderLocalEnv is then responsible for consuming those secrets from ESC and
 // referencing them from test steps.
 //
-// Refs https://github.com/pulumi/ci-mgmt/issues/1481.
+// Refs https://github.com/pulumi-labs/ci-mgmt/issues/1481.
 func renderGlobalEnv(v any) (string, error) {
 	config, ok := v.(Config)
 	if !ok {
@@ -450,7 +450,7 @@ func renderGlobalEnv(v any) (string, error) {
 // It differs from renderGlobalEnv only in that additional publishing secrets
 // are included by default when ESC is disabled.
 //
-// Refs https://github.com/pulumi/ci-mgmt/issues/1481.
+// Refs https://github.com/pulumi-labs/ci-mgmt/issues/1481.
 func renderPublishEnv(v any) (string, error) {
 	config, ok := v.(Config)
 	if !ok {
@@ -499,7 +499,7 @@ func renderPublishEnv(v any) (string, error) {
 //
 // If ESC is disabled this only passes GITHUB_TOKEN to the step.
 //
-// Refs https://github.com/pulumi/ci-mgmt/issues/1481.
+// Refs https://github.com/pulumi-labs/ci-mgmt/issues/1481.
 func renderLocalEnv(v any) (string, error) {
 	config, ok := v.(Config)
 	if !ok {

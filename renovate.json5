@@ -39,7 +39,7 @@
     {
       // Until we get our change merged upstream, Renovate should track
       // pose/chores/better-stack-traces branch instead of main.
-      // See: https://github.com/pulumi/ci-mgmt/issues/1987
+      // See: https://github.com/pulumi-labs/ci-mgmt/issues/1987
       matchManagers: ["github-actions"],
       matchPackageNames: ["pose/stale-issue-cleanup"],
       enabled: false

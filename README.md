@@ -89,7 +89,7 @@ To add a new provider:
 1. Commit the changes and open a pull request.
 
 1. To receive a pull request with your new config files, you can run the
-   [Update Workflows, Single Bridged Provider](https://github.com/pulumi/ci-mgmt/actions/workflows/update-workflows-single-bridged-provider.yml)
+   [Update Workflows, Single Bridged Provider](https://github.com/pulumi-labs/ci-mgmt/actions/workflows/update-workflows-single-bridged-provider.yml)
    workflow run, using your provider name as the input.
    Another option is to wait for the nightly cronjob to send this pull request automatically.
 
@@ -108,7 +108,7 @@ To add a new provider:
 
 ## Updating All Bridged Providers
 
-The [Update GH Workflows, ecosystem providers](https://github.com/pulumi/ci-mgmt/actions/workflows/update-workflows-ecosystem-providers.yml)
+The [Update GH Workflows, ecosystem providers](https://github.com/pulumi-labs/ci-mgmt/actions/workflows/update-workflows-ecosystem-providers.yml)
 Workflow runs on a nightly schedule.
 You may trigger this Workflow manually; however be aware that this causes a lot of GitHub Actions to run at the same
 time, which may cause rate limiting across the org. Plan ahead and do this at a low-traffic time.
@@ -136,7 +136,7 @@ You can apply ad-hoc source edits across provider repositories even on files tha
 - stand up a PR to ci-mgmt
 
 - trigger an action such as
-  [update-workflows-bridged-providers.yml](https://github.com/pulumi/ci-mgmt/actions/workflows/update-workflows-bridged-providers.yml)
+  [update-workflows-bridged-providers.yml](https://github.com/pulumi-labs/ci-mgmt/actions/workflows/update-workflows-bridged-providers.yml)
   from the PR; this will create PRs that synchronize the selected repositories with ci-mgmt and apply the source
   migration as part of the change
 
