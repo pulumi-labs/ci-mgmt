@@ -11,6 +11,7 @@ env:
   PULUMI_GO_DEP_ROOT: ${{ github.workspace }}/..
   PULUMI_LOCAL_NUGET: ${{ github.workspace }}/nuget
   PULUMI_MISSING_DOCS_ERROR: "true"
+  PULUMI_PROVIDER_AUTOMATION_TOKEN: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN }}
   PULUMI_PULUMI_ENABLE_JOURNALING: "true"
   TF_APPEND_USER_AGENT: pulumi
   XYZ_REGION: us-west-2
@@ -20,7 +21,6 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-      id-token: write # For ESC secrets.
     uses: ./.github/workflows/prerequisites.yml
     secrets: inherit
     with:
@@ -34,7 +34,6 @@ jobs:
     secrets: inherit
     permissions:
       contents: read
-      id-token: write # For ESC secrets.
     with:
       version: ${{ needs.prerequisites.outputs.version }}
 
@@ -45,7 +44,6 @@ jobs:
     secrets: inherit
     permissions:
       contents: write # For Renovate SDKs.
-      id-token: write # For ESC secrets.
     with:
       version: ${{ needs.prerequisites.outputs.version }}
 
@@ -63,7 +61,6 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-      id-token: write
     needs:
       - prerequisites
       - build_provider
@@ -85,7 +82,6 @@ jobs:
       - build_sdk
     permissions:
       contents: read
-      id-token: write
     secrets: inherit
     with:
       version: ${{ needs.prerequisites.outputs.version }}
