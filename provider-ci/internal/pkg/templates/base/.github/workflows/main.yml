@@ -97,8 +97,8 @@ jobs:
         commit: ${{ github.sha }}
         slack_channel: C02MGR8JVST
       env:
-        RELEASE_BOT_ENDPOINT: ${{ steps.esc-secrets.outputs.RELEASE_BOT_ENDPOINT }}
-        RELEASE_BOT_KEY: ${{ steps.esc-secrets.outputs.RELEASE_BOT_KEY }}
+        RELEASE_BOT_ENDPOINT: ${{ secrets.RELEASE_BOT_ENDPOINT }}
+        RELEASE_BOT_KEY: ${{ secrets.RELEASE_BOT_KEY }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   test:

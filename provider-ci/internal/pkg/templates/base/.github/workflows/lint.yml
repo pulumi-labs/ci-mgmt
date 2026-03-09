@@ -37,8 +37,8 @@ jobs:
     - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
       id: app-auth
       with:
-        app-id: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
-        private-key: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
+        app-id: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
+        private-key: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
         owner: ${{ github.repository_owner }}
 #{{- end }}#
     - name: Install mise
@@ -47,7 +47,7 @@ jobs:
         MISE_FETCH_REMOTE_VERSIONS_TIMEOUT: 30s
       with:
         version: #{{ .Config.MiseVersion }}#
-        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_TOKEN || steps.esc-secrets.outputs.PULUMI_BOT_TOKEN }}#{{ end }}#
+        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN || secrets.PULUMI_BOT_TOKEN }}#{{ end }}#
         cache_save: false # A different job handles caching our tools.
     - name: disarm go:embed directives to enable lint
       continue-on-error: true # this fails if there are no go:embed directives

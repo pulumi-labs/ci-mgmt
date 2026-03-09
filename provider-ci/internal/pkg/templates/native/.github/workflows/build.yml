@@ -42,8 +42,8 @@ jobs:
     - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
       id: app-auth
       with:
-        app-id: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
-        private-key: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
+        app-id: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
+        private-key: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
         owner: ${{ github.repository_owner }}
 #{{- end }}#
     - id: version
@@ -102,7 +102,7 @@ jobs:
           echo 'EOF';
         } >> "$GITHUB_ENV"
       env:
-        GITHUB_TOKEN: ${{ steps.esc-secrets.outputs.PULUMI_BOT_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PULUMI_BOT_TOKEN }}
     - if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
       name: Comment on PR with Details of Schema Check
       uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3.0.1
@@ -170,7 +170,7 @@ jobs:
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
       env:
-        CODECOV_TOKEN: ${{ steps.esc-secrets.outputs.CODECOV_TOKEN }}
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     - if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@77eaa4f1c608a7d68b38af4e3f739dcd8cba273e # v3.19.0
@@ -179,7 +179,7 @@ jobs:
         fields: repo,commit,author,action
         status: ${{ job.status }}
       env:
-        SLACK_WEBHOOK_URL: ${{ steps.esc-secrets.outputs.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   build_sdks:
     needs: prerequisites
     runs-on: #{{ if eq .Config.Provider "command" }}#ubuntu-latest#{{ else }}#pulumi-ubuntu-8core#{{ end }}#
@@ -205,8 +205,8 @@ jobs:
     - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
       id: app-auth
       with:
-        app-id: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
-        private-key: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
+        app-id: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
+        private-key: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
         owner: ${{ github.repository_owner }}
 #{{- end }}#
     - id: version
@@ -219,7 +219,7 @@ jobs:
     - name: Setup Tools
       uses: ./.github/actions/setup-tools
       with:
-        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_TOKEN || steps.esc-secrets.outputs.PULUMI_BOT_TOKEN }}#{{ end }}#
+        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN || secrets.PULUMI_BOT_TOKEN }}#{{ end }}#
     - name: Download Provider Binary
       uses: ./.github/actions/download-provider
     #{{- if .Config.CheckoutSubmodules }}#
@@ -263,7 +263,7 @@ jobs:
         fields: repo,commit,author,action
         status: ${{ job.status }}
       env:
-        SLACK_WEBHOOK_URL: ${{ steps.esc-secrets.outputs.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   tag_release_if_labeled_needs_release:
     name: Tag release if labeled as needs-release
@@ -286,8 +286,8 @@ jobs:
         commit: ${{ github.sha }}
         slack_channel: C02MGR8JVST
       env:
-        RELEASE_BOT_ENDPOINT: ${{ steps.esc-secrets.outputs.RELEASE_BOT_ENDPOINT }}
-        RELEASE_BOT_KEY: ${{ steps.esc-secrets.outputs.RELEASE_BOT_KEY }}
+        RELEASE_BOT_ENDPOINT: ${{ secrets.RELEASE_BOT_ENDPOINT }}
+        RELEASE_BOT_KEY: ${{ secrets.RELEASE_BOT_KEY }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   test:
@@ -320,8 +320,8 @@ jobs:
     - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
       id: app-auth
       with:
-        app-id: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
-        private-key: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
+        app-id: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
+        private-key: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
         owner: ${{ github.repository_owner }}
 #{{- end }}#
     - id: version
@@ -334,7 +334,7 @@ jobs:
     - name: Setup Tools
       uses: ./.github/actions/setup-tools
       with:
-        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_TOKEN || steps.esc-secrets.outputs.PULUMI_BOT_TOKEN }}#{{ end }}#
+        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN || secrets.PULUMI_BOT_TOKEN }}#{{ end }}#
     - name: Download Provider Binary
       uses: ./.github/actions/download-provider
     - name: Download SDK
@@ -442,7 +442,7 @@ jobs:
         fields: repo,commit,author,action
         status: ${{ job.status }}
       env:
-        SLACK_WEBHOOK_URL: ${{ steps.esc-secrets.outputs.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   publish:
     runs-on: #{{ if .Config.Runner.Publish }}##{{ .Config.Runner.Publish }}##{{ else if eq .Config.Provider "aws-native" }}#macos-latest#{{ else }}#ubuntu-latest#{{ end }}#
     needs: test
@@ -459,8 +459,8 @@ jobs:
     - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
       id: app-auth
       with:
-        app-id: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
-        private-key: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
+        app-id: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
+        private-key: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
         owner: ${{ github.repository_owner }}
 #{{- end }}#
     - id: version
@@ -473,7 +473,7 @@ jobs:
     - name: Setup Tools
       uses: ./.github/actions/setup-tools
       with:
-        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_TOKEN || steps.esc-secrets.outputs.PULUMI_BOT_TOKEN }}#{{ end }}#
+        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN || secrets.PULUMI_BOT_TOKEN }}#{{ end }}#
     #{{- if ne .Config.Provider "aws-native" }}#
     - name: Clear GitHub Actions Ubuntu runner disk space
       uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
@@ -488,23 +488,23 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
       with:
-        aws-access-key-id: ${{ steps.esc-secrets.outputs.AWS_ACCESS_KEY_ID }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-region: us-east-2
-        aws-secret-access-key: ${{ steps.esc-secrets.outputs.AWS_SECRET_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         role-duration-seconds: 7200
         role-session-name: ${{ env.PROVIDER }}@githubActions
         role-external-id: upload-pulumi-release
-        role-to-assume: ${{ steps.esc-secrets.outputs.AWS_UPLOAD_ROLE_ARN }}
+        role-to-assume: ${{ secrets.AWS_UPLOAD_ROLE_ARN }}
     - name: Run GoReleaser
       uses: goreleaser/goreleaser-action@5742e2a039330cbb23ebf35f046f814d4c6ff811 # v5.1.0
       env:
         GORELEASER_CURRENT_TAG: v${{ steps.version.outputs.version }}
-        AZURE_SIGNING_CLIENT_ID: ${{ steps.esc-secrets.outputs.AZURE_SIGNING_CLIENT_ID }}
-        AZURE_SIGNING_CLIENT_SECRET: ${{ steps.esc-secrets.outputs.AZURE_SIGNING_CLIENT_SECRET }}
-        AZURE_SIGNING_TENANT_ID: ${{ steps.esc-secrets.outputs.AZURE_SIGNING_TENANT_ID }}
-        AZURE_SIGNING_KEY_VAULT_URI: ${{ steps.esc-secrets.outputs.AZURE_SIGNING_KEY_VAULT_URI }}
-        SKIP_SIGNING: ${{ steps.esc-secrets.outputs.AZURE_SIGNING_CLIENT_ID == '' && steps.esc-secrets.outputs.AZURE_SIGNING_CLIENT_SECRET == '' && steps.esc-secrets.outputs.AZURE_SIGNING_TENANT_ID == '' && steps.esc-secrets.outputs.AZURE_SIGNING_KEY_VAULT_URI == '' }}
-        GITHUB_TOKEN: ${{ steps.esc-secrets.outputs.PULUMI_BOT_TOKEN }}
+        AZURE_SIGNING_CLIENT_ID: ${{ secrets.AZURE_SIGNING_CLIENT_ID }}
+        AZURE_SIGNING_CLIENT_SECRET: ${{ secrets.AZURE_SIGNING_CLIENT_SECRET }}
+        AZURE_SIGNING_TENANT_ID: ${{ secrets.AZURE_SIGNING_TENANT_ID }}
+        AZURE_SIGNING_KEY_VAULT_URI: ${{ secrets.AZURE_SIGNING_KEY_VAULT_URI }}
+        SKIP_SIGNING: ${{ secrets.AZURE_SIGNING_CLIENT_ID == '' && secrets.AZURE_SIGNING_CLIENT_SECRET == '' && secrets.AZURE_SIGNING_TENANT_ID == '' && secrets.AZURE_SIGNING_KEY_VAULT_URI == '' }}
+        GITHUB_TOKEN: ${{ secrets.PULUMI_BOT_TOKEN }}
       with:
         args: -p #{{ .Config.Parallel }}# -f .goreleaser.prerelease.yml --clean --skip=validate --timeout 60m0s
         version: latest
@@ -516,7 +516,7 @@ jobs:
         fields: repo,commit,author,action
         status: ${{ job.status }}
       env:
-        SLACK_WEBHOOK_URL: ${{ steps.esc-secrets.outputs.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   publish_sdk:
     runs-on: ubuntu-latest
     needs: publish
@@ -533,8 +533,8 @@ jobs:
     - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
       id: app-auth
       with:
-        app-id: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
-        private-key: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
+        app-id: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
+        private-key: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
         owner: ${{ github.repository_owner }}
 #{{- end }}#
     - id: version
@@ -553,7 +553,7 @@ jobs:
     - name: Setup Tools
       uses: ./.github/actions/setup-tools
       with:
-        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_TOKEN || steps.esc-secrets.outputs.PULUMI_BOT_TOKEN }}#{{ end }}#
+        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN || secrets.PULUMI_BOT_TOKEN }}#{{ end }}#
     - name: Download python SDK
       uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
       with:
@@ -583,16 +583,16 @@ jobs:
     - name: Publish SDKs
       run: ./ci-scripts/ci/publish-tfgen-package ${{ github.workspace }}
       env:
-        NUGET_PUBLISH_KEY: ${{ steps.esc-secrets.outputs.NUGET_PUBLISH_KEY }}
-        NODE_AUTH_TOKEN: ${{ steps.esc-secrets.outputs.NPM_TOKEN }}
+        NUGET_PUBLISH_KEY: ${{ secrets.NUGET_PUBLISH_KEY }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         PYPI_PUBLISH_ARTIFACTS: all
         PYPI_USERNAME: __token__
-        PYPI_PASSWORD: ${{ steps.esc-secrets.outputs.PYPI_API_TOKEN }}
-        SIGNING_KEY_ID: ${{ steps.esc-secrets.outputs.JAVA_SIGNING_KEY_ID }}
-        SIGNING_KEY: ${{ steps.esc-secrets.outputs.JAVA_SIGNING_KEY }}
-        SIGNING_PASSWORD: ${{ steps.esc-secrets.outputs.JAVA_SIGNING_PASSWORD }}
-        PUBLISH_REPO_USERNAME: ${{ steps.esc-secrets.outputs.OSSRH_USERNAME }}
-        PUBLISH_REPO_PASSWORD: ${{ steps.esc-secrets.outputs.OSSRH_PASSWORD }}
+        PYPI_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        SIGNING_KEY_ID: ${{ secrets.JAVA_SIGNING_KEY_ID }}
+        SIGNING_KEY: ${{ secrets.JAVA_SIGNING_KEY }}
+        SIGNING_PASSWORD: ${{ secrets.JAVA_SIGNING_PASSWORD }}
+        PUBLISH_REPO_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+        PUBLISH_REPO_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
     - if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@77eaa4f1c608a7d68b38af4e3f739dcd8cba273e # v3.19.0
@@ -601,7 +601,7 @@ jobs:
         fields: repo,commit,author,action
         status: ${{ job.status }}
       env:
-        SLACK_WEBHOOK_URL: ${{ steps.esc-secrets.outputs.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 #{{- if .Config.Lint }}#
   lint:
     name: lint
@@ -624,7 +624,7 @@ jobs:
     - name: Setup Tools
       uses: ./.github/actions/setup-tools
       with:
-        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_TOKEN || steps.esc-secrets.outputs.PULUMI_BOT_TOKEN }}#{{ end }}#
+        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN || secrets.PULUMI_BOT_TOKEN }}#{{ end }}#
     #{{- if .Config.GCP }}#
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
@@ -682,7 +682,7 @@ jobs:
     - name: Setup Tools
       uses: ./.github/actions/setup-tools
       with:
-        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_TOKEN || steps.esc-secrets.outputs.PULUMI_BOT_TOKEN }}#{{ end }}#
+        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN || secrets.PULUMI_BOT_TOKEN }}#{{ end }}#
     #{{- if .Config.GCP }}#
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0

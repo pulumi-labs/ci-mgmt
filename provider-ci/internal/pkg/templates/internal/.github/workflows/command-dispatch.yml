@@ -27,7 +27,7 @@ jobs:
         permission: write
         reaction-token: ${{ secrets.GITHUB_TOKEN }}
         repository: #{{ .Repository }}#
-        token: ${{ steps.esc-secrets.outputs.PULUMI_BOT_TOKEN }}
+        token: ${{ secrets.PULUMI_BOT_TOKEN }}
 name: command-dispatch
 on:
   issue_comment:

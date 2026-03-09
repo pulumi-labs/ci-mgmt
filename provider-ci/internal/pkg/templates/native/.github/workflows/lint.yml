@@ -31,7 +31,7 @@ jobs:
     - name: Setup Tools
       uses: ./.github/actions/setup-tools
       with:
-        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ steps.esc-secrets.outputs.PULUMI_BOT_TOKEN }}#{{ end }}#
+        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ secrets.PULUMI_BOT_TOKEN }}#{{ end }}#
     - name: Disarm go:embed directives to enable linters that compile source code
       run: git grep -l 'go:embed' -- provider | xargs --no-run-if-empty sed -i
         's/go:embed/ goembed/g'
