@@ -335,7 +335,6 @@ func parseTemplate(fsys fs.FS, inPath string) (*template.Template, error) {
 
 	tmpl, err := template.New(inPath).Funcs(template.FuncMap{
 		"toYaml":           toYAML,
-		"renderEscStep":    renderESCStep,
 		"renderGlobalEnv":  renderGlobalEnv,
 		"renderLocalEnv":   renderLocalEnv,
 		"renderPublishEnv": renderPublishEnv,
@@ -352,46 +351,6 @@ func toYAML(v interface{}) (string, error) {
 		return "", err
 	}
 	return strings.TrimSuffix(string(data), "\n"), nil
-}
-
-// renderESCStep generates either the real ESC action or our shim action which
-// re-exports the existing environment.
-func renderESCStep(v any) (string, error) {
-	config, ok := v.(Config)
-	if !ok {
-		return "", fmt.Errorf("expected Config input, got %+v", v)
-	}
-
-	yaml := func(v any) (string, error) {
-		s, err := toYAML([]any{v})
-		return "\n" + s, err
-	}
-
-	if config.ESC.Enabled {
-		env := map[string]string{
-			"ESC_ACTION_OIDC_AUTH":                    "true",
-			"ESC_ACTION_OIDC_ORGANIZATION":            "pulumi",
-			"ESC_ACTION_OIDC_REQUESTED_TOKEN_TYPE":    "urn:pulumi:token-type:access_token:organization",
-			"ESC_ACTION_ENVIRONMENT":                  config.ESC.Environment,
-			"ESC_ACTION_EXPORT_ENVIRONMENT_VARIABLES": "false",
-		}
-		step := map[string]any{
-			"name": "Fetch secrets from ESC",
-			"id":   "esc-secrets",
-			"uses": "pulumi/esc-action@9eb774255b1a4afb7855678ae8d4a77359da0d9b",
-			"env":  env,
-		}
-		return yaml(step)
-	}
-
-	// If ESC is disabled, we use a shim action which pipes environment
-	// variables to the action's outputs. This way our steps stay the same
-	// regardless of whether ESC is enabled or not.
-	return yaml(map[string]any{
-		"name": "Map environment to ESC outputs",
-		"id":   "esc-secrets",
-		"uses": "./.github/actions/esc-action",
-	})
 }
 
 // renderGlobalEnv is used to generate environment variables shared by all
@@ -411,29 +370,11 @@ func renderGlobalEnv(v any) (string, error) {
 		return "", fmt.Errorf("expected Config input, got %+v", v)
 	}
 
-	env := map[string]string{}
-
-	if !config.ESC.Enabled {
-		env = map[string]string{
-			"PULUMI_PROVIDER_AUTOMATION_TOKEN": "${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN }}",
-		}
-
-		if config.Organization == "pulumi" {
-			env["AWS_CORP_S3_UPLOAD_ACCESS_KEY_ID"] = "${{ secrets.AWS_CORP_S3_UPLOAD_ACCESS_KEY_ID }}"
-			env["AWS_CORP_S3_UPLOAD_SECRET_ACCESS_KEY"] = "${{ secrets.AWS_CORP_S3_UPLOAD_SECRET_ACCESS_KEY }}"
-			env["CODECOV_TOKEN"] = "${{ secrets.CODECOV_TOKEN }}"
-			env["PULUMI_BOT_TOKEN"] = "${{ secrets.PULUMI_BOT_TOKEN }}"
-			env["RELEASE_BOT_ENDPOINT"] = "${{ secrets.RELEASE_BOT_ENDPOINT }}"
-			env["RELEASE_BOT_KEY"] = "${{ secrets.RELEASE_BOT_KEY }}"
-			env["S3_COVERAGE_BUCKET_NAME"] = "${{ secrets.S3_COVERAGE_BUCKET_NAME }}"
-			env["SLACK_WEBHOOK_URL"] = "${{ secrets.SLACK_WEBHOOK_URL }}"
-		}
+	env := map[string]string{
+		"PULUMI_PROVIDER_AUTOMATION_TOKEN": "${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN }}",
 	}
 
 	for k, v := range config.Env {
-		if config.ESC.Enabled && strings.Contains(v, "secrets.") {
-			continue // Omit secrets from the global env.
-		}
 		env[k] = v
 	}
 
@@ -457,35 +398,18 @@ func renderPublishEnv(v any) (string, error) {
 		return "", fmt.Errorf("expected Config input, got %+v", v)
 	}
 
-	env := map[string]string{}
-
-	if !config.ESC.Enabled {
-		env = map[string]string{
-			"JAVA_SIGNING_KEY_ID":   "${{ secrets.JAVA_SIGNING_KEY_ID }}",
-			"JAVA_SIGNING_KEY":      "${{ secrets.JAVA_SIGNING_KEY }}",
-			"JAVA_SIGNING_PASSWORD": "${{ secrets.JAVA_SIGNING_PASSWORD }}",
-			"NPM_TOKEN":             "${{ secrets.NPM_TOKEN }}",
-			"NUGET_PUBLISH_KEY":     "${{ secrets.NUGET_PUBLISH_KEY }}",
-			"OSSRH_PASSWORD":        "${{ secrets.OSSRH_PASSWORD }}",
-			"OSSRH_USERNAME":        "${{ secrets.OSSRH_USERNAME }}",
-			"PYPI_API_TOKEN":        "${{ secrets.PYPI_API_TOKEN }}",
-		}
-
-		if config.Organization == "pulumi" {
-			env["AWS_SECRET_ACCESS_KEY"] = "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-			env["AWS_ACCESS_KEY_ID"] = "${{ secrets.AWS_ACCESS_KEY_ID }}"
-			env["AWS_UPLOAD_ROLE_ARN"] = "${{ secrets.AWS_UPLOAD_ROLE_ARN }}"
-			env["CODECOV_TOKEN"] = "${{ secrets.CODECOV_TOKEN }}"
-			env["PULUMI_BOT_TOKEN"] = "${{ secrets.PULUMI_BOT_TOKEN }}"
-			env["RELEASE_BOT_ENDPOINT"] = "${{ secrets.RELEASE_BOT_ENDPOINT }}"
-			env["RELEASE_BOT_KEY"] = "${{ secrets.RELEASE_BOT_KEY }}"
-		}
+	env := map[string]string{
+		"JAVA_SIGNING_KEY_ID":   "${{ secrets.JAVA_SIGNING_KEY_ID }}",
+		"JAVA_SIGNING_KEY":      "${{ secrets.JAVA_SIGNING_KEY }}",
+		"JAVA_SIGNING_PASSWORD": "${{ secrets.JAVA_SIGNING_PASSWORD }}",
+		"NPM_TOKEN":             "${{ secrets.NPM_TOKEN }}",
+		"NUGET_PUBLISH_KEY":     "${{ secrets.NUGET_PUBLISH_KEY }}",
+		"OSSRH_PASSWORD":        "${{ secrets.OSSRH_PASSWORD }}",
+		"OSSRH_USERNAME":        "${{ secrets.OSSRH_USERNAME }}",
+		"PYPI_API_TOKEN":        "${{ secrets.PYPI_API_TOKEN }}",
 	}
 
 	for k, v := range config.Env {
-		if config.ESC.Enabled && strings.Contains(v, "secrets.") {
-			continue // Omit secrets from the global env.
-		}
 		env[k] = v
 	}
 
@@ -493,37 +417,9 @@ func renderPublishEnv(v any) (string, error) {
 }
 
 // renderLocalEnv is responsible for generating more targeted environment variables for use in e.g. test steps.
-
-// If ESC is enabled, environment variables from ci-mgmt.yml are rendered with secrets replaced by
-// ESC outputs. Plaintext values are omitted since they are already contained in the global environment.
-//
-// If ESC is disabled this only passes GITHUB_TOKEN to the step.
-//
-// Refs https://github.com/pulumi-labs/ci-mgmt/issues/1481.
 func renderLocalEnv(v any) (string, error) {
-	config, ok := v.(Config)
-	if !ok {
-		return "", fmt.Errorf("expected Config input, got %+v", v)
-	}
-
 	env := map[string]string{
 		"GITHUB_TOKEN": "${{ secrets.GITHUB_TOKEN }}",
-	}
-
-	if !config.ESC.Enabled {
-		return toYAML(env)
-	}
-
-	for k, v := range config.Env {
-		if !strings.Contains(v, "secrets.") {
-			continue // Omit plaintext values already in the global env.
-		}
-		if k != "GITHUB_TOKEN" && (strings.HasPrefix(v, "${{secrets.") || strings.HasPrefix(v, "${{ secrets.")) {
-			fixed := strings.Replace(v, "secrets.", "steps.esc-secrets.outputs.", 1)
-			fmt.Fprintf(os.Stderr, "warning: ESC is enabled, correcting '%s: %s' to be '%s: %s'\n", k, v, k, fixed)
-			v = fixed
-		}
-		env[k] = v
 	}
 
 	return toYAML(env)

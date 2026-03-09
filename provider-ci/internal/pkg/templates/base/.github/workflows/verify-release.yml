@@ -73,7 +73,6 @@ jobs:
         uses: #{{ .Config.ActionVersions.Checkout }}#
         with:
           persist-credentials: false
-      #{{- .Config | renderEscStep | indent 6 }}#
       - name: Install mise
         uses: jdx/mise-action@c1a019b8d2586943b4dbebc456323b516910e310
         with:

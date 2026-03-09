@@ -87,7 +87,6 @@ jobs:
       uses: #{{ .Config.ActionVersions.Checkout }}#
       with:
         persist-credentials: false
-    #{{- .Config | renderEscStep | indent 4 }}#
     - name: check if this commit needs release
       if: ${{ env.RELEASE_BOT_ENDPOINT != '' }}
       uses: pulumi/action-release-by-pr-label@main

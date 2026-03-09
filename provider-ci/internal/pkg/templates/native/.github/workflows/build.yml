@@ -37,7 +37,6 @@ jobs:
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       with:
         lfs: true
-#{{- .Config | renderEscStep | indent 4 }}#
 #{{- if .Config.GitHubApp.Enabled }}#
     - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
       id: app-auth
@@ -200,7 +199,6 @@ jobs:
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       with:
         lfs: true
-#{{- .Config | renderEscStep | indent 4 }}#
 #{{- if .Config.GitHubApp.Enabled }}#
     - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
       id: app-auth
@@ -276,7 +274,6 @@ jobs:
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       with:
         lfs: true
-#{{- .Config | renderEscStep | indent 4 }}#
     - name: check if this commit needs release
       if: ${{ env.RELEASE_BOT_ENDPOINT != '' }}
       uses: pulumi/action-release-by-pr-label@main
@@ -315,7 +312,6 @@ jobs:
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       with:
         lfs: true
-#{{- .Config | renderEscStep | indent 4 }}#
 #{{- if .Config.GitHubApp.Enabled }}#
     - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
       id: app-auth
@@ -454,7 +450,6 @@ jobs:
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       with:
         lfs: true
-#{{- .Config | renderEscStep | indent 4 }}#
 #{{- if .Config.GitHubApp.Enabled }}#
     - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
       id: app-auth
@@ -528,7 +523,6 @@ jobs:
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       with:
         lfs: true
-#{{- .Config | renderEscStep | indent 4 }}#
 #{{- if .Config.GitHubApp.Enabled }}#
     - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
       id: app-auth
