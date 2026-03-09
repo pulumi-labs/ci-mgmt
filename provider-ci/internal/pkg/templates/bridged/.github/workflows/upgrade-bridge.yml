@@ -99,7 +99,7 @@ jobs:
         MISE_FETCH_REMOTE_VERSIONS_TIMEOUT: 30s
       with:
         version: #{{ .Config.MiseVersion }}#
-        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN || secrets.PULUMI_BOT_TOKEN }}#{{ end }}#
+        github_token: #{{ if .Config.GitHubApp.Enabled }}#${{ steps.app-auth.outputs.token }}#{{ else }}#${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN }}#{{ end }}#
         # only saving the cache in the prerequisites job
         cache_save: false
     - name: Call upgrade provider action
@@ -117,7 +117,7 @@ jobs:
         pr-title-prefix: ${{ inputs.pr-title-prefix }}
         patch-release: ${{ github.event.client_payload.patch-release }}
       env:
-        GH_TOKEN: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN || secrets.PULUMI_BOT_TOKEN || secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN || secrets.GITHUB_TOKEN }}
     - name: Call upgrade provider action
       if: github.event_name == 'repository_dispatch'
       uses: #{{ .Config.ActionVersions.UpgradeProviderAction }}#
@@ -133,4 +133,4 @@ jobs:
         pr-title-prefix: ${{ github.event.client_payload.pr-title-prefix }}
         patch-release: ${{ github.event.client_payload.patch-release }}
       env:
-        GH_TOKEN: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN || secrets.PULUMI_BOT_TOKEN || secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_TOKEN || secrets.GITHUB_TOKEN }}
