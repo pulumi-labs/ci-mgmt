@@ -308,9 +308,6 @@ jobs:
 #{{- end }}#
     permissions:
       contents: write
-      #{{- if .Config.ESC.Enabled }}#
-      id-token: write
-      #{{- end }}#
     uses: ./.github/workflows/verify-release.yml
     secrets: inherit
     with:

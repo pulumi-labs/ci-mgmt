@@ -49,9 +49,6 @@ jobs:
     runs-on: ubuntu-latest
     name: prerequisites
     permissions:
-      #{{- if .Config.ESC.Enabled }}#
-      id-token: write # For ESC secrets.
-      #{{- end }}#
       pull-requests: write # For schema check comment.
     steps:
     - name: Checkout Repo
@@ -264,9 +261,6 @@ jobs:
     name: build_sdks
     permissions:
       contents: read
-      #{{- if .Config.ESC.Enabled }}#
-      id-token: write # For ESC secrets.
-      #{{- end }}#
     steps:
     - name: Checkout Repo
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -407,9 +401,6 @@ jobs:
     name: test
     permissions:
       contents: read
-      #{{- if .Config.ESC.Enabled }}#
-      id-token: write
-      #{{- end }}#
     steps:
     - name: Checkout Repo
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -579,9 +570,6 @@ jobs:
         sha: ${{ github.event.pull_request.head.sha || github.sha }}
     permissions:
       statuses: write
-      #{{- if .Config.ESC.Enabled }}#
-      id-token: write # For ESC secrets.
-      #{{- end }}#
     if: github.event_name == 'repository_dispatch' ||
       github.event.pull_request.head.repo.full_name == github.repository
     needs:

@@ -23,9 +23,6 @@ jobs:
     runs-on: #{{ if .Config.Runner.Prerequisites }}##{{ .Config.Runner.Prerequisites }}##{{ else }}#ubuntu-latest#{{ end }}#
     name: prerequisites
     permissions:
-      #{{- if .Config.ESC.Enabled }}#
-      id-token: write # For ESC secrets.
-      #{{- end }}#
       pull-requests: write # For schema check comment.
     steps:
     - name: Checkout Repo
@@ -188,9 +185,6 @@ jobs:
     name: build_sdks
     permissions:
       contents: read
-      #{{- if .Config.ESC.Enabled }}#
-      id-token: write # For ESC secrets.
-      #{{- end }}#
     steps:
     - name: Checkout Repo
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -279,9 +273,6 @@ jobs:
     name: test
     permissions:
       contents: read
-      #{{- if .Config.ESC.Enabled }}#
-      id-token: write # For ESC secrets.
-      #{{- end }}#
     steps:
     - name: Checkout Repo
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -421,9 +412,6 @@ jobs:
     name: publish
     permissions:
       contents: read
-      #{{- if .Config.ESC.Enabled }}#
-      id-token: write # For ESC secrets.
-      #{{- end }}#
     steps:
     - name: Checkout Repo
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -498,9 +486,6 @@ jobs:
     name: publish_sdks
     permissions:
       contents: read
-      #{{- if .Config.ESC.Enabled }}#
-      id-token: write # For ESC secrets.
-      #{{- end }}#
     steps:
     - name: Checkout Repo
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -582,9 +567,6 @@ jobs:
     name: publish_java_sdk
     permissions:
       contents: read
-      #{{- if .Config.ESC.Enabled }}#
-      id-token: write # For ESC secrets.
-      #{{- end }}#
     steps:
     - name: Checkout Repo
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -678,9 +660,6 @@ jobs:
     needs: publish_go_sdk
     permissions:
       contents: read
-      #{{- if .Config.ESC.Enabled }}#
-      id-token: write # For ESC secrets.
-      #{{- end }}#
     steps:
     - name: Checkout Repo
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -714,9 +693,6 @@ jobs:
       stack-name: ${{ steps.stackname.outputs.stack-name }}
     permissions:
       contents: read
-      #{{- if .Config.ESC.Enabled }}#
-      id-token: write # For Pulumi access token OIDC.
-      #{{- end }}#
     steps:
     - name: Checkout Repo
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -775,9 +751,6 @@ jobs:
     if: github.event.pull_request.head.repo.full_name == github.repository
     permissions:
       contents: read
-      #{{- if .Config.ESC.Enabled }}#
-      id-token: write # For Pulumi access token OIDC.
-      #{{- end }}#
     steps:
     - name: Checkout Repo
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
