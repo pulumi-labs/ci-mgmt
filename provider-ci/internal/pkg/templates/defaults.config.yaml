@@ -221,12 +221,6 @@ allowMissingDocs: true
 # Where the go.mod file for the skd lives
 sdkModuleDir: "sdk"
 
-esc:
-  enabled: false
-  environment: github-secrets/${{ github.repository_owner }}-${{ github.event.repository.name }}
-  organization: pulumi
-  requestedTokenType: urn:pulumi:token-type:access_token:organization
-
 # Enables auth via a GitHub app.
 github-app:
   enabled: true
