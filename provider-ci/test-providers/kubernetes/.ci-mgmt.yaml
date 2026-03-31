@@ -6,8 +6,6 @@ gcp: true # need GCP credentials to test in GKE
 pulumiVersionFile: .pulumi.version
 major-version: 4
 parallel: 3
-esc:
-    enabled: true
 envOverride:
     PULUMI_API: https://api.pulumi-staging.io
     AWS_REGION: us-west-2

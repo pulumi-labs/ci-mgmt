@@ -8,7 +8,5 @@ parallel: 3
 timeout: 0.0000001
 noSchema: true # Disable schema check.
 envOverride:
-  AWS_REGION: us-west-2
-  PULUMI_API: https://api.pulumi-staging.io
-esc:
-  enabled: true
+    AWS_REGION: us-west-2
+    PULUMI_API: https://api.pulumi-staging.io

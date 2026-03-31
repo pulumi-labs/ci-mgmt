@@ -242,7 +242,9 @@ type Config struct {
 	// EnableChangelog controls whether the changelog is generated. (only used by aws-native)
 	EnableChangelog string `yaml:"enableChangelog"`
 
+	////////////////////////////////////////////////////////////
 	// Deprecated configs
+	////////////////////////////////////////////////////////////
 
 	// Parallel has no effect but is set by some providers.
 	// https://github.com/search?q=org%3Apulumi+path%3A.ci-mgmt.yaml+%22parallel%3A%22&type=code

@@ -22,7 +22,7 @@ func Migrate(templateName, outDir string) error {
 		updateToDotnet8{},
 		ignoreMiseLocal{},
 		deleteOldMiseConfig{},
-		migrateCimgmtOverrides{},
+		migrateCimgmtContent{},
 		maintainMiseLock{},
 		unignoreSDKSchemaGo{},
 	}

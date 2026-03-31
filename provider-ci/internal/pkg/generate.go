@@ -355,15 +355,6 @@ func toYAML(v interface{}) (string, error) {
 
 // renderGlobalEnv is used to generate environment variables shared by all
 // jobs/steps in a non-publishing workflow.
-//
-// If ESC is disabled, the environment from ci-mgmt.yml is returned as-is. This
-// preserves pre-ESC behavior where secrets were (over-)exposed to all steps.
-//
-// If ESC is enabled, then this will return only non-secret env vars.
-// renderLocalEnv is then responsible for consuming those secrets from ESC and
-// referencing them from test steps.
-//
-// Refs https://github.com/pulumi-labs/ci-mgmt/issues/1481.
 func renderGlobalEnv(v any) (string, error) {
 	config, ok := v.(Config)
 	if !ok {

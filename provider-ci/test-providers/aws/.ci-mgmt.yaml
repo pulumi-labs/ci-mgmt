@@ -7,8 +7,6 @@ timeout: 150
 generate-nightly-test-workflow: true
 providerVersion: github.com/hashicorp/terraform-provider-aws/version.ProviderVersion
 buildProviderPre: "VERSION=${VERSION_GENERIC} ./scripts/minimal_schema.sh"
-esc:
-    enabled: true
 env:
     PULUMI_MISSING_DOCS_ERROR: true
     AWS_REGION: "us-west-2"
