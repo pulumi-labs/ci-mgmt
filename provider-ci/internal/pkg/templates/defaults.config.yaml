@@ -228,4 +228,4 @@ github-app:
   private-key: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_SECRET_KEY }}
 
 # Version of mise to use
-mise-version: 2026.2.20
+mise-version: 2026.3.7
