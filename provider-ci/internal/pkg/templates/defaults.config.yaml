@@ -78,7 +78,7 @@ toolVersions:
   go: "1.21.x"
   java: "11"
   gradle: "7.6"
-  nodejs: "20.x"
+  nodejs: "24.x"
   pulumi: "dev"
   python: "3.11.8"
 

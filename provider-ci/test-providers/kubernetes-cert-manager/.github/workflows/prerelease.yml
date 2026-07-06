@@ -11,7 +11,7 @@ env:
   TRAVIS_OS_NAME: linux
   PULUMI_GO_DEP_ROOT: ${{ github.workspace }}/..
   GOVERSION: "1.21.x"
-  NODEVERSION: "20.x"
+  NODEVERSION: "24.x"
   PYTHONVERSION: "3.11.8"
   DOTNETVERSION: "8.0.x"
   JAVAVERSION: "11"
