@@ -48,8 +48,8 @@ jobs:
     - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
       id: app-auth
       with:
-        app-id: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
-        private-key: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
+        app-id: #{{ .Config.GitHubApp.ID }}#
+        private-key: #{{ .Config.GitHubApp.PrivateKey }}#
         owner: ${{ github.repository_owner }}
 #{{- end }}#
     - name: Install mise
@@ -153,8 +153,8 @@ jobs:
     - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
       id: app-auth
       with:
-        app-id: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
-        private-key: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
+        app-id: #{{ .Config.GitHubApp.ID }}#
+        private-key: #{{ .Config.GitHubApp.PrivateKey }}#
         owner: ${{ github.repository_owner }}
 #{{- end }}#
     - name: Install mise
@@ -245,8 +245,8 @@ jobs:
       - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
         id: app-auth
         with:
-          app-id: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
-          private-key: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
+          app-id: #{{ .Config.GitHubApp.ID }}#
+          private-key: #{{ .Config.GitHubApp.PrivateKey }}#
           owner: ${{ github.repository_owner }}
 #{{- end }}#
       - name: Dispatch Metadata build
@@ -282,8 +282,8 @@ jobs:
     - uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
       id: app-auth
       with:
-        app-id: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
-        private-key: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
+        app-id: #{{ .Config.GitHubApp.ID }}#
+        private-key: #{{ .Config.GitHubApp.PrivateKey }}#
         owner: ${{ github.repository_owner }}
 #{{- end }}#
     - name: Clean up release labels

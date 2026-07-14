@@ -225,7 +225,7 @@ sdkModuleDir: "sdk"
 github-app:
   enabled: true
   id: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
-  private-key: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_SECRET_KEY }}
+  private-key: ${{ secrets.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
 
 # Version of mise to use
 mise-version: 2026.3.7
